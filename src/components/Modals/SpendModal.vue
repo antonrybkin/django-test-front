@@ -1,9 +1,10 @@
 <template>
   <v-dialog
+      v-if="show"
       v-model="show"
       max-width="300"
   >
-      <ValidationObserver ref="obs" v-slot="{ invalid, validated, handleSubmit, validate }">
+      <ValidationObserver ref="obs" tag="form" v-slot="{ invalid, validated, handleSubmit, validate }">
       <v-card>
           <v-card-text>
           <ValidationProvider name="toPay" rules="required" v-slot="{ errors, valid }">
@@ -12,16 +13,16 @@
               label="Название"
               :error-messages="errors"
               :success="valid"
-              ></v-text-field>
+              @keypress="errorText = ''" />
           </ValidationProvider>
           <ValidationProvider name="toPay" rules="required|numeric" v-slot="{ errors, valid }">
               <v-text-field
               v-model="toPay"
               label="Введите сумму"
               :error-messages="errors"
-              :success="valid"
-              ></v-text-field>
+              @keypress="errorText = ''" />
           </ValidationProvider>
+          <div class="error--text" v-if="errorText">{{ errorText }}</div>
           </v-card-text>
 
           <v-card-actions>
@@ -61,7 +62,8 @@ export default {
   data () {
     return {
       toPay: null,
-      merchant: ''
+      merchant: '',
+      errorText: ''
     }
   },
   computed: {
@@ -76,8 +78,10 @@ export default {
   },
   methods: {
     clearForm () {
+      this.merchant = '';
       this.toPay = null;
       this.show = false;
+      this.errorText = '';
     },
 
     spend () {
@@ -86,7 +90,11 @@ export default {
         merchant: this.merchant,
         amount: this.toPay
       }
-      this.$store.dispatch('spend', payload).then(() => this.clearForm())
+      this.$store.dispatch('spend', payload)
+        .then(() => this.clearForm())
+        .catch((error) => {
+          this.errorText = 'Не хватает денег, либо что-то заполнено нетак.'
+        })
     }
   },
   mounted() {

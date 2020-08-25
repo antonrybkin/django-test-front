@@ -30,7 +30,7 @@ export default {
   },
   computed: {
     transactions() {
-      return this.$store.state.transactions.filter((t) => t.id === this.id)
+      return this.$store.state.transactions.filter((t) => t.account === this.id)
     }
   },
   mounted() {

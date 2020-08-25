@@ -7,7 +7,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     fees: [],
-    transactions: []
+    transactions: [],
+    backEndError: null
   },
   mutations: {
     SET_FEES(state, fees) {
@@ -19,12 +20,19 @@ export default new Vuex.Store({
     CREATE_FEE(state, fee) {
       state.fees.push(fee)
     },
+    SET_BACKEND_ERROR(state, err) {
+      state.backEndError = err
+    },
   },
   actions: {
     loadFees(context) {
       getAllFees()
       .then((res) => {
         context.commit(`SET_FEES`, res.data)
+      })
+      .catch((error) => {
+        const err = `Не работает BackEnd, по-этому 0 счетов. Подробнее: ${error}`
+        context.commit(`SET_BACKEND_ERROR`, err)
       })
     },
     createFee(context) {
@@ -41,11 +49,16 @@ export default new Vuex.Store({
       .catch((error) => console.error(error))
     },
     spend(context, payload) {
-      spend(payload)
-      .then(() => {
-        context.dispatch(`loadFees`)
+      return new Promise((resolve, reject) => {
+        spend(payload)
+        .then(() => {
+          context.dispatch(`loadFees`)
+          resolve(true)
+        })
+        .catch((error) => {
+          reject();
+        })
       })
-      .catch((error) => console.error(error))
     },
     delete(context, id) {
       del(id)

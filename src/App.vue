@@ -1,6 +1,7 @@
 <template>
   <v-app id="app">
     <router-view/>
+    <div v-if="$store.state.backEndError" class="error--text text-center">{{ $store.state.backEndError }}</div>
   </v-app>
 </template>
 
