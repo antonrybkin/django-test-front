@@ -1,7 +1,7 @@
-import Vue from 'vue'
+import Vue from "vue";
 import { required, numeric } from "vee-validate/dist/rules";
 import { extend } from "vee-validate";
-import { ValidationObserver, ValidationProvider } from 'vee-validate';
+import { ValidationObserver, ValidationProvider } from "vee-validate";
 
 extend("required", {
   ...required,
@@ -13,5 +13,5 @@ extend("numeric", {
   message: "Должны быть цифры"
 });
 
-Vue.component('ValidationObserver', ValidationObserver);
-Vue.component('ValidationProvider', ValidationProvider);
+Vue.component("ValidationObserver", ValidationObserver);
+Vue.component("ValidationProvider", ValidationProvider);

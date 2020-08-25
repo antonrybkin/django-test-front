@@ -1,24 +1,25 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import Vue from "vue";
+import VueRouter from "vue-router";
 
-Vue.use(VueRouter)
-  const routes = [
+Vue.use(VueRouter);
+const routes = [
   {
-    path: '/',
-    name: 'Fees',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Fees.vue')
+    path: "/",
+    name: "Fees",
+    component: () => import(/* webpackChunkName: "about" */ "../views/Fees.vue")
   },
   {
-    path: '/transactions/:id',
-    name: 'Transactions',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Transactions.vue')
+    path: "/transactions/:id",
+    name: "Transactions",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/Transactions.vue")
   }
-]
+];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
   routes
-})
+});
 
-export default router
+export default router;

@@ -1,16 +1,18 @@
 <template>
   <v-app id="app">
-    <router-view/>
-    <div v-if="$store.state.backEndError" class="error--text text-center">{{ $store.state.backEndError }}</div>
+    <router-view />
+    <div v-if="$store.state.backEndError" class="error--text text-center">
+      {{ $store.state.backEndError }}
+    </div>
   </v-app>
 </template>
 
 <script>
 export default {
   mounted() {
-    this.$store.dispatch('loadFees')
+    this.$store.dispatch("loadFees");
   }
-}
+};
 </script>
 
 <style lang="scss">

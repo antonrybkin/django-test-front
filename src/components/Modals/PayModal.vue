@@ -1,48 +1,46 @@
 <template>
-  <v-dialog
-      v-model="show"
-      max-width="300"
-  >
-      <ValidationObserver ref="obs" v-slot="{ invalid, validated, handleSubmit, validate }">
+  <v-dialog v-model="show" max-width="300">
+    <ValidationObserver ref="obs" v-slot="{ invalid, validated }">
       <v-card>
-          <v-card-text>
-          <ValidationProvider name="toPay" rules="required|numeric" v-slot="{ errors, valid }">
-              <v-text-field
+        <v-card-text>
+          <ValidationProvider
+            name="toPay"
+            rules="required|numeric"
+            v-slot="{ errors, valid }"
+          >
+            <v-text-field
               v-model="toPay"
               label="Введите сумму"
               :error-messages="errors"
               :success="valid"
-              ></v-text-field>
+            ></v-text-field>
           </ValidationProvider>
-          </v-card-text>
+        </v-card-text>
 
-          <v-card-actions>
+        <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn
-              text
-              @click="clearForm"
-          >
-              Отмена
+          <v-btn text @click="clearForm">
+            Отмена
           </v-btn>
 
           <v-btn
-              color="green darken-1"
-              text
-              :disabled="invalid || !validated"
-              @click="pay"
+            color="green darken-1"
+            text
+            :disabled="invalid || !validated"
+            @click="pay"
           >
-              Пополнить
+            Пополнить
           </v-btn>
-          </v-card-actions>
+        </v-card-actions>
       </v-card>
-      </ValidationObserver>
+    </ValidationObserver>
   </v-dialog>
 </template>
 
 <script>
 export default {
-  name: 'PayModal',
+  name: "PayModal",
   props: {
     value: {
       type: Boolean,
@@ -50,37 +48,37 @@ export default {
     },
     selectedAccount: Number
   },
-  data () {
+  data() {
     return {
       toPay: null
-    }
+    };
   },
   computed: {
     show: {
-      get () {
-        return this.value
+      get() {
+        return this.value;
       },
-      set (value) {
-        this.$emit('input', value)
+      set(value) {
+        this.$emit("input", value);
       }
     }
   },
   methods: {
-    clearForm () {
+    clearForm() {
       this.toPay = null;
       this.show = false;
     },
 
-    pay () {
+    pay() {
       const payload = {
         account: this.selectedAccount,
         amount: this.toPay
-      }
-      this.$store.dispatch('pay', payload).then(() => this.clearForm())
+      };
+      this.$store.dispatch("pay", payload).then(() => this.clearForm());
     }
   },
   mounted() {
-    this.$store.dispatch('loadFees')
+    this.$store.dispatch("loadFees");
   }
-}
+};
 </script>

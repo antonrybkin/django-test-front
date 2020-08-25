@@ -17,24 +17,24 @@
 
 <script>
 export default {
-  name: 'Fees',
-  data () {
+  name: "Fees",
+  data() {
     return {
       headers: [
-        { text: 'Номер', value: 'id' },
-        { text: 'Название', value: 'merchant' },
-        { text: 'Сумма', value: 'amount' },
+        { text: "Номер", value: "id" },
+        { text: "Название", value: "merchant" },
+        { text: "Сумма", value: "amount" }
       ],
       id: Number(this.$route.params.id)
-    }
+    };
   },
   computed: {
     transactions() {
-      return this.$store.state.transactions.filter((t) => t.account === this.id)
+      return this.$store.state.transactions.filter(t => t.account === this.id);
     }
   },
   mounted() {
-    this.$store.dispatch('loadTransactions')
+    this.$store.dispatch("loadTransactions");
   }
-}
+};
 </script>
